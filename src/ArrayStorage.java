@@ -4,40 +4,38 @@
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    private Resume resume;
-
+    private int size = 0;
 
     void clear() {
         int i = 0;
-        int arrayLength = storage.length;
-        while ((i < arrayLength) && (storage[i] != null)) {
+        while ((i < storage.length) && (storage[i] != null)) {
             storage[i] = null;
+            i++;
+            size--;
         }
+
     }
 
     void save(Resume r) {
         int i = 0;
-        int arrayLength = storage.length;
-        while ((i < arrayLength) && (storage[i] != null)) {
+        while ((i < storage.length) && (storage[i] != null)) {
             i++;
         }
-        // storage.fill(Resume,i,i r) ;
         storage[i] = r;
-
+        size++;
     }
 
     /**
      * @return element with uuid, contains only Resumes in storage (without null)
      */
     Resume get(String uuid) {
-        int arrayLength = storage.length;
         int i = 0;
+        Resume resume = null;
         boolean isFindResult = false;
-        while ((i < arrayLength) && (storage[i] != null) && (!isFindResult)) {
+        while ((i < storage.length) && (storage[i] != null) && (!isFindResult)) {
             resume = storage[i];
-            if (resume.uuid.equals(uuid)) {
-                isFindResult = true;
-            } else {
+            if (resume.uuid.equals(uuid)) isFindResult = true;
+            else {
                 i++;
             }
         }
@@ -49,25 +47,24 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int arrayLength = storage.length;
         int i = 0;
         boolean isFindResult = false;
-        while ((i < arrayLength) && (storage[i] != null) && (!isFindResult)) {
+        while ((i < storage.length) && (storage[i] != null) && (!isFindResult)) {
             if (storage[i].uuid.equals(uuid)) {
                 isFindResult = true;
                 storage[i] = null;
+                size--;
             } else {
                 i++;
             }
         }
         if (isFindResult) {
-            while ((i < arrayLength - 1) && (storage[i + 1] != null)) {
+            while ((i < storage.length - 1) && (storage[i + 1] != null)) {
                 storage[i] = storage[i + 1];
                 i++;
             }
             storage[i] = null;
         }
-
     }
 
     /**
@@ -75,8 +72,7 @@ public class ArrayStorage {
      */
     Resume[] getAll() {
         int i = 0;
-        int arrayLength = storage.length;
-        while ((i < arrayLength) && (storage[i] != null)) {
+        while ((i < storage.length) && (storage[i] != null)) {
             i++;
         }
         Resume[] resumeInStorage = new Resume[i];
@@ -85,12 +81,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        int i = 0;
-        int arrayLength = storage.length;
-        while ((i < arrayLength) && (storage[i] != null)) {
-            i++;
-        }
-
-        return i;
+        return size;
     }
 }
